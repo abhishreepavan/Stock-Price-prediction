@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Custom Stock Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        label {
+            font-size: 16px;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form action="/custom_prediction" method="post">
+            <label for="stock_symbol">Stock Symbol:</label>
+            <input type="text" id="stock_symbol" name="stock_symbol" required><br><br>
+
+            <label for="start_date">Start Date:</label>
+            <input type="date" id="start_date" name="start_date" required><br><br>
+
+            <label for="end_date">End Date:</label>
+            <input type="date" id="end_date" name="end_date" required><br><br>
+
+            <input type="submit" value="Predict">
+        </form>
+    </div>
+
+    <script>
+        // Set the maximum date to yesterday and minimum date to 5 years ago
+        let today = new Date();
+        let yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        let fiveYearsAgo = new Date(today);
+        fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
+
+        function formatDate(date) {
+            let d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2)
+                month = '0' + month;
+            if (day.length < 2)
+                day = '0' + day;
+
+            return [year, month, day].join('-');
+        }
+
+        document.getElementById('start_date').setAttribute("max", formatDate(yesterday));
+        document.getElementById('start_date').setAttribute("min", formatDate(fiveYearsAgo));
+        document.getElementById('end_date').setAttribute("max", formatDate(yesterday));
+        document.getElementById('end_date').setAttribute("min", formatDate(fiveYearsAgo));
+    </script>
+</body>
+</html>
